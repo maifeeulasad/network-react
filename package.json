@@ -1,0 +1,49 @@
+{
+	"name": "network-react",
+	"version": "0.0.1",
+	"description": "A react package to make network calls easily",
+	"keywords": [
+		"network",
+		"react",
+		"ts",
+		"typescript"
+	],
+	"homepage": "https://github.com/maifeeulasad/network-react#readme",
+	"bugs": {
+		"url": "https://github.com/maifeeulasad/network-react/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/maifeeulasad/network-react.git"
+	},
+	"license": "MIT",
+	"author": "Maifee Ul Asad <maifeeulasad@gmail.com>",
+	"type": "module",
+	"main": "dist/cjs/index.js",
+	"module": "dist/esm/index.js",
+	"types": "dist/index.d.ts",
+	"scripts": {
+		"rollup": "rollup -c --bundleConfigAsCjs --configPlugin typescript",
+		"prepare": "pnpm rollup"
+	},
+	"peerDependencies": {
+		"@types/react": "^18.0.9",
+		"react": "^18.1.0"
+	},
+	"devDependencies": {
+		"@rollup/plugin-commonjs": "^28.0.3",
+		"@rollup/plugin-node-resolve": "^16.0.1",
+		"@rollup/plugin-terser": "^0.4.4",
+		"@rollup/plugin-typescript": "^12.1.2",
+		"@types/node": "^22.13.17",
+		"@types/rollup-plugin-peer-deps-external": "^2.2.5",
+		"rollup": "^4.38.0",
+		"rollup-plugin-dts": "^6.2.1",
+		"rollup-plugin-peer-deps-external": "^2.2.4",
+		"tslib": "^2.8.1",
+		"typescript": "^5.8.2"
+	},
+	"files": [
+		"dist"
+	]
+}
