@@ -1,0 +1,30 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+        registry-url: ['https://registry.npmjs.org']
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+          registry-url: ${{ matrix.registry-url }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 9
+      - name: 'Installing deps'
+        run: pnpm i
+      - name: 'Publish'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
