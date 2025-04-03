@@ -29,14 +29,14 @@ const useFetch = <T>(
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    
+
     debounceTimerRef.current = setTimeout(async () => {
       if (useCache && cache.has(url)) {
         setData(cache.get(url));
         setLoading(false);
         return;
       }
-      
+
       setLoading(true);
       setError(undefined);
 
@@ -46,7 +46,7 @@ const useFetch = <T>(
           if (controllerRef.current) {
             controllerRef.current.abort();
           }
-          
+
           const controller = new AbortController();
           controllerRef.current = controller;
           const signal = controller.signal;
