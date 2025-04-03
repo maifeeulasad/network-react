@@ -137,6 +137,8 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
           attempt++;
           if (attempt > retries) break;
           await new Promise(resolve => setTimeout(resolve, retryDelay));
+        } finally {
+          setLoading(false);
         }
       }
       setLoading(false);
