@@ -55,5 +55,8 @@
 	},
 	"files": [
 		"dist"
-	]
+	],
+	"jest": {
+		"testEnvironment": "jsdom"
+	}
 }
