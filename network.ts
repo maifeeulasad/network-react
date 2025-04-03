@@ -86,6 +86,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   const [error, setError] = useState<string | undefined>(undefined);
   const controllerRef = useRef<AbortController | null>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutIds = useRef<ReturnType<typeof setTimeout>[]>([]);
 
   const fetchData = useCallback(() => {
     if (debounceTimerRef.current) {
@@ -113,9 +114,11 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
           controllerRef.current = controller;
           const signal = controller.signal;
           const timeoutId = setTimeout(() => controller.abort(), timeout);
+          timeoutIds.current.push(timeoutId);
 
           const response = await fetch(url, { ...options, signal });
           clearTimeout(timeoutId);
+          timeoutIds.current = timeoutIds.current.filter(id => id !== timeoutId);
 
           if (!response.ok) {
             throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -152,6 +155,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
         clearTimeout(debounceTimerRef.current);
       }
       controllerRef.current?.abort();
+      timeoutIds.current.forEach(clearTimeout);
     };
   }, [fetchData]);
 
