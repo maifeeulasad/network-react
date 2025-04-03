@@ -7,7 +7,7 @@ interface FetchState<T> {
   refetch: () => Promise<void>;
 }
 
-const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3): FetchState<T> => {
+const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, retryDelay: number = 1000): FetchState<T> => {
   const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -37,10 +37,11 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3): F
         }
         attempt++;
         if (attempt > retries) break;
+        await new Promise(resolve => setTimeout(resolve, retryDelay));
       }
     }
     setLoading(false);
-  }, [url, options, retries]);
+  }, [url, options, retries, retryDelay]);
 
   useEffect(() => {
     fetchData();
