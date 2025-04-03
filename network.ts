@@ -7,7 +7,7 @@ interface FetchState<T> {
   refetch: () => Promise<void>;
 }
 
-const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, retryDelay: number = 1000): FetchState<T> => {
+const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, retryDelay: number = 1000, timeout: number = 5000): FetchState<T> => {
   const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | undefined>(undefined);
@@ -19,7 +19,12 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, re
     let attempt = 0;
     while (attempt <= retries) {
       try {
-        const response = await fetch(url, options);
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+        const response = await fetch(url, { ...options, signal });
+        clearTimeout(timeoutId);
 
         if (!response.ok) {
           throw new Error(`Error: ${response.status} ${response.statusText}`);
@@ -41,7 +46,7 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, re
       }
     }
     setLoading(false);
-  }, [url, options, retries, retryDelay]);
+  }, [url, options, retries, retryDelay, timeout]);
 
   useEffect(() => {
     fetchData();
