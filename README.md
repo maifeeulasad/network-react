@@ -15,7 +15,7 @@ npm i network-react
 🎯 Or, directly add it to your `package.json`:
 
 ```json
-"network-react": "^0.0.2"
+"network-react": "^1.0.1"
 ```
 
 ---
