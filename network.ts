@@ -8,13 +8,21 @@ interface FetchState<T> {
   abort: () => void;
 }
 
-const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, retryDelay: number = 1000, timeout: number = 5000): FetchState<T> => {
-  const [data, setData] = useState<T | undefined>(undefined);
-  const [loading, setLoading] = useState<boolean>(true);
+const cache = new Map<string, any>();
+
+const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, retryDelay: number = 1000, timeout: number = 5000, useCache: boolean = true): FetchState<T> => {
+  const [data, setData] = useState<T | undefined>(useCache ? cache.get(url) : undefined);
+  const [loading, setLoading] = useState<boolean>(!useCache || !cache.has(url));
   const [error, setError] = useState<string | undefined>(undefined);
   const controllerRef = useRef<AbortController | null>(null);
 
   const fetchData = useCallback(async () => {
+    if (useCache && cache.has(url)) {
+      setData(cache.get(url));
+      setLoading(false);
+      return;
+    }
+    
     setLoading(true);
     setError(undefined);
 
@@ -39,6 +47,9 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, re
 
         const result: T = await response.json();
         setData(result);
+        if (useCache) {
+          cache.set(url, result);
+        }
         setError(undefined);
         return;
       } catch (err) {
@@ -53,7 +64,7 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, re
       }
     }
     setLoading(false);
-  }, [url, options, retries, retryDelay, timeout]);
+  }, [url, options, retries, retryDelay, timeout, useCache]);
 
   useEffect(() => {
     fetchData();
