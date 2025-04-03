@@ -1,9 +1,8 @@
 module.exports = {
-    preset: 'ts-jest',
-    testEnvironment: 'jsdom',
-    transform: {
-      "^.+\\.tsx?$": "ts-jest"
-    },
-    testTimeout: 10000,
-  };
-  
+  preset: 'ts-jest',
+  testEnvironment: 'jsdom',
+  transform: {
+    "^.+\\.tsx?$": "ts-jest"
+  },
+  testTimeout: 10000,
+};
