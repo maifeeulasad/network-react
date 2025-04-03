@@ -8,17 +8,26 @@ interface FetchState<T> {
   abort: () => void;
 }
 
+interface UseFetchConfig extends RequestInit {
+  retries?: number;
+  retryDelay?: number;
+  timeout?: number;
+  debounceTime?: number;
+  useCache?: boolean;
+}
+
 const cache = new Map<string, any>();
 
-const useFetch = <T>(
-  url: string,
-  options?: RequestInit,
-  retries: number = 3,
-  retryDelay: number = 1000,
-  timeout: number = 5000,
-  useCache: boolean = true,
-  debounceTime: number = 300
-): FetchState<T> => {
+const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  const {
+    retries = 3,
+    retryDelay = 1000,
+    timeout = 5000,
+    debounceTime = 300,
+    useCache = true,
+    ...options
+  } = config || {};
+
   const [data, setData] = useState<T | undefined>(useCache ? cache.get(url) : undefined);
   const [loading, setLoading] = useState<boolean>(!useCache || !cache.has(url));
   const [error, setError] = useState<string | undefined>(undefined);
@@ -29,14 +38,14 @@ const useFetch = <T>(
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-
+    
     debounceTimerRef.current = setTimeout(async () => {
       if (useCache && cache.has(url)) {
         setData(cache.get(url));
         setLoading(false);
         return;
       }
-
+      
       setLoading(true);
       setError(undefined);
 
@@ -46,7 +55,7 @@ const useFetch = <T>(
           if (controllerRef.current) {
             controllerRef.current.abort();
           }
-
+          
           const controller = new AbortController();
           controllerRef.current = controller;
           const signal = controller.signal;
