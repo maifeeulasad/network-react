@@ -1,16 +1,18 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface FetchState<T> {
   data?: T;
   loading: boolean;
   error?: string;
   refetch: () => Promise<void>;
+  abort: () => void;
 }
 
 const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, retryDelay: number = 1000, timeout: number = 5000): FetchState<T> => {
   const [data, setData] = useState<T | undefined>(undefined);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | undefined>(undefined);
+  const controllerRef = useRef<AbortController | null>(null);
 
   const fetchData = useCallback(async () => {
     setLoading(true);
@@ -19,7 +21,12 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, re
     let attempt = 0;
     while (attempt <= retries) {
       try {
+        if (controllerRef.current) {
+          controllerRef.current.abort();
+        }
+        
         const controller = new AbortController();
+        controllerRef.current = controller;
         const signal = controller.signal;
         const timeoutId = setTimeout(() => controller.abort(), timeout);
 
@@ -50,9 +57,14 @@ const useFetch = <T>(url: string, options?: RequestInit, retries: number = 3, re
 
   useEffect(() => {
     fetchData();
+    return () => controllerRef.current?.abort();
   }, [fetchData]);
 
-  return { data, loading, error, refetch: fetchData };
+  const abort = () => {
+    controllerRef.current?.abort();
+  };
+
+  return { data, loading, error, refetch: fetchData, abort };
 };
 
 export { useFetch };
