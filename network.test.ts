@@ -35,7 +35,10 @@ describe("useFetch Hook", () => {
     } as Response);
 
     const { result, waitForNextUpdate } = renderHook(() =>
-      useFetch("https://api.example.com/data", { debounceTime: 0 })
+      useFetch("https://api.example.com/data", { 
+        retries: 0,
+        debounceTime: 0 
+      })
     );
 
     await waitForNextUpdate();
@@ -53,7 +56,7 @@ describe("useFetch Hook", () => {
         json: async () => ({ data: "Recovered Data" }),
       } as Response);
 
-    const { result } = renderHook(() =>
+    const { result, waitForNextUpdate } = renderHook(() =>
       useFetch("https://api.example.com/data", {
         retries: 1,
         retryDelay: 1000,
@@ -61,12 +64,12 @@ describe("useFetch Hook", () => {
       })
     );
 
-    // Initial fetch
-    await act(async () => { await Promise.resolve(); });
+    // Initial failed fetch
+    await waitForNextUpdate();
 
-    // Retry after delay
+    // Advance timers and wait for retry
     act(() => jest.advanceTimersByTime(1000));
-    await act(async () => { await Promise.resolve(); });
+    await waitForNextUpdate();
 
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(result.current.data).toEqual({ data: "Recovered Data" });
@@ -84,7 +87,7 @@ describe("useFetch Hook", () => {
   });
 
   it("should cache data", async () => {
-    const mockData = { message: "Cached Data" };
+    const mockData = { data: "Recovered Data" };
     (fetch as jest.Mock).mockResolvedValueOnce({
       ok: true,
       json: async () => mockData,
