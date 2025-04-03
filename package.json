@@ -17,7 +17,7 @@
 		"url": "git+https://github.com/maifeeulasad/network-react.git"
 	},
 	"license": "MIT",
-	"author": "Maifee Ul Asad <maifeeulasad@gmail.com>",
+	"author": "Maifee Ul Asad<maifeeulasad@gmail.com>",
 	"type": "module",
 	"main": "dist/cjs/index.js",
 	"module": "dist/esm/index.js",
