@@ -1,5 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+const DEFAULT_RETRIES = 3;
+const DEFAULT_RETRY_DELAY = 1000;
+const DEFAULT_TIMEOUT = 5000;
+const DEFAULT_DEBOUNCE_TIME = 300;
+const DEFAULT_USE_CACHE = false;
+
 interface FetchState<T> {
   data?: T;
   loading: boolean;
@@ -20,11 +26,11 @@ const cache = new Map<string, any>();
 
 const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   const {
-    retries = 3,
-    retryDelay = 1000,
-    timeout = 5000,
-    debounceTime = 300,
-    useCache = true,
+    retries = DEFAULT_RETRIES,
+    retryDelay = DEFAULT_RETRY_DELAY,
+    timeout = DEFAULT_TIMEOUT,
+    debounceTime = DEFAULT_DEBOUNCE_TIME,
+    useCache = DEFAULT_USE_CACHE,
     ...options
   } = config || {};
 
