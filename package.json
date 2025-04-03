@@ -27,8 +27,8 @@
 		"prepare": "pnpm rollup"
 	},
 	"peerDependencies": {
-		"@types/react": "^18.0.9",
-		"react": "^18.1.0"
+		"@types/react": "^16.0.9",
+		"react": "^16.1.0"
 	},
 	"devDependencies": {
 		"@rollup/plugin-commonjs": "^28.0.3",
