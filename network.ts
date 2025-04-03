@@ -1,3 +1,50 @@
+/**
+ * A custom React hook for fetching data with advanced features such as retries, 
+ * timeout, caching, and debouncing. It provides a convenient way to handle 
+ * asynchronous data fetching in React components.
+ *
+ * @template T - The type of the data expected from the fetch response.
+ * 
+ * @param {string} url - The URL to fetch data from.
+ * @param {UseFetchConfig} [config] - Optional configuration for the fetch request.
+ * @param {number} [config.retries=3] - The number of retry attempts in case of failure.
+ * @param {number} [config.retryDelay=1000] - The delay (in milliseconds) between retries.
+ * @param {number} [config.timeout=5000] - The timeout (in milliseconds) for the fetch request.
+ * @param {number} [config.debounceTime=300] - The debounce time (in milliseconds) to delay the fetch call.
+ * @param {boolean} [config.useCache=false] - Whether to use caching for the fetched data.
+ * @param {RequestInit} [config] - Additional options for the fetch request (e.g., headers, method).
+ * 
+ * @returns {FetchState<T>} - An object containing the fetch state:
+ * - `data` (T | undefined): The fetched data, or `undefined` if not yet available.
+ * - `loading` (boolean): Whether the fetch request is currently in progress.
+ * - `error` (string | undefined): An error message if the fetch request failed, or `undefined` if no error occurred.
+ * - `refetch` (function): A function to manually trigger a refetch of the data.
+ * - `abort` (function): A function to abort the ongoing fetch request.
+ * 
+ * @example
+ * ```tsx
+ * import React from 'react';
+ * import { useFetch } from './network';
+ * 
+ * const MyComponent = () => {
+ *   const { data, loading, error, refetch } = useFetch<MyDataType>('https://api.example.com/data', {
+ *     retries: 5,
+ *     timeout: 10000,
+ *     useCache: true,
+ *   });
+ * 
+ *   if (loading) return <p>Loading...</p>;
+ *   if (error) return <p>Error: {error}</p>;
+ * 
+ *   return (
+ *     <div>
+ *       <pre>{JSON.stringify(data, null, 2)}</pre>
+ *       <button onClick={refetch}>Refetch</button>
+ *     </div>
+ *   );
+ * };
+ * ```
+ */
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 const DEFAULT_RETRIES = 3;
