@@ -4,6 +4,7 @@ interface FetchState<T> {
   data?: T;
   loading: boolean;
   error?: string;
+  refetch: () => FetchState<T>;
 }
 
 const useFetch = <T>(url: string, options?: RequestInit): FetchState<T> => {
@@ -39,7 +40,7 @@ const useFetch = <T>(url: string, options?: RequestInit): FetchState<T> => {
     fetchData();
   }, [fetchData]);
 
-  return { data, loading, error };
+  return { data, loading, error, refetch: fetchData };
 };
 
 export { useFetch };
