@@ -55,7 +55,7 @@ describe("useFetch Hook", () => {
         ok: true,
         json: async () => ({ data: "Recovered Data" }),
       } as Response);
-
+  
     const { result, waitForNextUpdate } = renderHook(() =>
       useFetch("https://api.example.com/data", {
         retries: 1,
@@ -63,14 +63,18 @@ describe("useFetch Hook", () => {
         debounceTime: 0,
       })
     );
-
-    // Initial failed fetch
+  
+    await act(async () => {
+      await Promise.resolve();
+    });
+  
+    await act(async () => {
+      jest.advanceTimersByTime(1000);
+      await Promise.resolve();
+    });
+  
     await waitForNextUpdate();
-
-    // Advance timers and wait for retry
-    act(() => jest.advanceTimersByTime(1000));
-    await waitForNextUpdate();
-
+  
     expect(fetch).toHaveBeenCalledTimes(2);
     expect(result.current.data).toEqual({ data: "Recovered Data" });
   });
