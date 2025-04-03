@@ -63,6 +63,9 @@ importers:
       typescript:
         specifier: ^5.8.2
         version: 5.8.2
+      whatwg-fetch:
+        specifier: ^3.6.20
+        version: 3.6.20
 
 packages:
 
@@ -1525,6 +1528,9 @@ packages:
 
   webidl-conversions@3.0.1:
     resolution: {integrity: sha512-2JAn3z8AR6rjK8Sm8orRC0h/bcl/DqL7tRPdGZ4I1CjdF+EaMLmYxBHyXuKL849eucPFhvBoxMsflfOb8kxaeQ==}
+
+  whatwg-fetch@3.6.20:
+    resolution: {integrity: sha512-EqhiFU6daOA8kpjOWTL0olhVOF3i7OrFzSYiGsEMB8GcXS+RrzauAERX65xMeNWVqxA6HXH2m69Z9LaKKdisfg==}
 
   whatwg-url@5.0.0:
     resolution: {integrity: sha512-saE57nupxk6v3HY35+jzBwYa0rKSy0XR8JSxZPwgLr7ys0IBzhGviA1/TUGJLmSVqs8pb9AnvICXEuOHLprYTw==}
@@ -3240,6 +3246,8 @@ snapshots:
       makeerror: 1.0.12
 
   webidl-conversions@3.0.1: {}
+
+  whatwg-fetch@3.6.20: {}
 
   whatwg-url@5.0.0:
     dependencies:
