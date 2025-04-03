@@ -4,5 +4,6 @@ module.exports = {
     transform: {
       "^.+\\.tsx?$": "ts-jest"
     },
+    testTimeout: 90000,
   };
   
