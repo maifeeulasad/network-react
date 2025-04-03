@@ -4,7 +4,7 @@ interface FetchState<T> {
   data?: T;
   loading: boolean;
   error?: string;
-  refetch: () => FetchState<T>;
+  refetch: () => Promise<void>;
 }
 
 const useFetch = <T>(url: string, options?: RequestInit): FetchState<T> => {
