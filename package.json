@@ -24,6 +24,7 @@
 	"types": "dist/index.d.ts",
 	"scripts": {
 		"rollup": "rollup -c --bundleConfigAsCjs --configPlugin typescript",
+		"rollup:watch": "chokidar 'network.ts' -c 'pnpm rollup'",
 		"prepare": "pnpm rollup",
 		"test": "jest",
 		"test:watch": "jest --watch",
