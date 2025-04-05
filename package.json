@@ -46,6 +46,7 @@
 		"@types/node": "^22.14.0",
 		"@types/rollup-plugin-peer-deps-external": "^2.2.5",
 		"chokidar": "^4.0.3",
+		"chokidar-cli": "^3.0.0",
 		"jest": "^29.7.0",
 		"jest-environment-jsdom": "^29.7.0",
 		"jest-fetch-mock": "^3.0.3",
