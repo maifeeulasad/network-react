@@ -157,7 +157,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
       controllerRef.current?.abort();
       timeoutIds.current.forEach(clearTimeout);
     };
-  }, [fetchData]);
+  }, []);
 
   const abort = () => {
     controllerRef.current?.abort();
