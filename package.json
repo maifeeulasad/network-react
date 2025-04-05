@@ -57,7 +57,7 @@
 		"rollup-plugin-peer-deps-external": "^2.2.4",
 		"ts-jest": "^29.3.1",
 		"tslib": "^2.8.1",
-		"typescript": "^5.8.2",
+		"typescript": "^5.8.3",
 		"whatwg-fetch": "^3.6.20"
 	},
 	"files": [
