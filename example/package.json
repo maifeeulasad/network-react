@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-		"dev:watch": "chokidar '../dist/*.*' -c 'pnpm dev'",
+    "dev": "node kill5173.js && vite",
+    "dev:watch": "chokidar '../dist/*.*' -c 'pnpm dev'",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
