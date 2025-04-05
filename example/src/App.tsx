@@ -2,9 +2,17 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+// @ts-ignore
+import { useFetch } from 'network-react';
 
 function App() {
   const [count, setCount] = useState(0)
+  const { data, error, loading } = useFetch('https://jsonplaceholder.typicode.com/posts/', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
 
   return (
     <>
@@ -28,6 +36,20 @@ function App() {
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
       </p>
+      <div>
+          <p>
+            {loading && 'Loading...'}
+            {error && `Error: ${error}`}
+            <table>
+              {data && (data || []).map((item: any) => (
+                <tr key={item.id}>
+                  <td>{item.title}</td>
+                  <td>{item.body}</td>
+                </tr>
+              ))}
+            </table>
+          </p>
+        </div>
     </>
   )
 }
