@@ -61,7 +61,7 @@ function MyComponent() {
 ✅ Caching for optimized performance 🗂️  
 ✅ Debouncing to prevent excessive requests ⏳  
 ✅ Abort ongoing fetch requests 🚫  
-
+✅ GraphQL support (v2.0.0 onwards) 🕸️
 ---
 
 🎉 Happy coding! 🚀🔥
