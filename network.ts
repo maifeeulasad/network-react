@@ -90,11 +90,12 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   } = config || {};
 
   if (followConventions) {
-    if (method === 'GET' && options.body) {
-      console.warn('GET requests should not have a body. Ignoring body.');
+    if (method === 'HEAD' && options.body) {
+      console.warn('HEAD requests should not have a body. Ignoring body.');
       console.warn('set followConventions to disable this feature.')
       delete options.body;
     }
+
   }
 
   const [data, setData] = useState<T | undefined>(useCache ? cache.get(url) : undefined);
