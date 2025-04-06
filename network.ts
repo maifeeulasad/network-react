@@ -52,6 +52,7 @@ const DEFAULT_RETRY_DELAY = 1000;
 const DEFAULT_TIMEOUT = 5000;
 const DEFAULT_DEBOUNCE_TIME = 300;
 const DEFAULT_USE_CACHE = false;
+const DEFAULT_HTTP_METHOD = 'GET';
 
 interface FetchState<T> {
   data?: T;
@@ -67,6 +68,7 @@ interface UseFetchConfig extends RequestInit {
   timeout?: number;
   debounceTime?: number;
   useCache?: boolean;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
 }
 
 const cache = new Map<string, any>();
@@ -78,6 +80,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
     timeout = DEFAULT_TIMEOUT,
     debounceTime = DEFAULT_DEBOUNCE_TIME,
     useCache = DEFAULT_USE_CACHE,
+    method = DEFAULT_HTTP_METHOD,
     ...options
   } = config || {};
 
