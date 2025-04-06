@@ -14,6 +14,7 @@
  * @param {boolean} [config.useCache=false] - Whether to use caching for the fetched data.
  * @param {string} [config.method='GET'] - The HTTP method to use for the fetch request (e.g., 'GET', 'POST').
  * @param {RequestInit} [config] - Additional options for the fetch request (e.g., headers, method).
+ * @param {boolean} [config.followConventions=true] - Whether to follow HTTP conventions for the fetch request.
  * 
  * @returns {FetchState<T>} - An object containing the fetch state:
  * - `data` (T | undefined): The fetched data, or `undefined` if not yet available.
@@ -54,6 +55,7 @@ const DEFAULT_TIMEOUT = 5000;
 const DEFAULT_DEBOUNCE_TIME = 300;
 const DEFAULT_USE_CACHE = false;
 const DEFAULT_HTTP_METHOD = 'GET';
+const DEFAULT_FOLLOW_CONVENTIONS = true;
 
 interface FetchState<T> {
   data?: T;
@@ -64,6 +66,7 @@ interface FetchState<T> {
 }
 
 interface UseFetchConfig extends RequestInit {
+  followConventions?: boolean;
   retries?: number;
   retryDelay?: number;
   timeout?: number;
@@ -76,6 +79,7 @@ const cache = new Map<string, any>();
 
 const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   const {
+    followConventions = DEFAULT_FOLLOW_CONVENTIONS,
     retries = DEFAULT_RETRIES,
     retryDelay = DEFAULT_RETRY_DELAY,
     timeout = DEFAULT_TIMEOUT,
