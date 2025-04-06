@@ -50,18 +50,18 @@ function MyComponent() {
 
 # 🏆 Features 🛠️
 
-✅ Simple API ✨  
-✅ Built-in loading & error handling ⏳❌  
-✅ Supports custom request options (GET, POST, etc.) 🛠️  
-✅ Works with any REST API 🌍  
-✅ TypeScript support 📜  
-✅ Lightweight & efficient ⚡  
-✅ Retry mechanism with configurable attempts 🔄  
-✅ Timeout support for fetch requests ⏱️  
-✅ Caching for optimized performance 🗂️  
-✅ Debouncing to prevent excessive requests ⏳  
-✅ Abort ongoing fetch requests 🚫  
-✅ GraphQL support (v2.0.0 onwards) 🕸️
+ - ✅ Simple API ✨  
+ - ✅ Built-in loading & error handling ⏳❌  
+ - ✅ Supports custom request options (GET, POST, etc.) 🛠️  
+ - ✅ Works with any REST API 🌍  
+ - ✅ TypeScript support 📜  
+ - ✅ Lightweight & efficient ⚡  
+ - ✅ Retry mechanism with configurable attempts 🔄  
+ - ✅ Timeout support for fetch requests ⏱️  
+ - ✅ Caching for optimized performance 🗂️  
+ - ✅ Debouncing to prevent excessive requests ⏳  
+ - ✅ Abort ongoing fetch requests 🚫  
+ - ✅ GraphQL support (v2.0.0 onwards) 🕸️
 ---
 
 🎉 Happy coding! 🚀🔥
