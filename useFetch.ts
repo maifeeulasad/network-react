@@ -15,8 +15,9 @@
  * @param {string} [config.method='GET'] - The HTTP method to use for the fetch request (e.g., 'GET', 'POST').
  * @param {RequestInit} [config] - Additional options for the fetch request (e.g., headers, method).
  * @param {boolean} [config.followConventions=true] - Whether to follow HTTP conventions for the fetch request.
+ * @param {boolean} [config.runInFuture=false] - If true, the fetch will not be executed immediately.
  * 
- * @returns {FetchState<T>} - An object containing the fetch state:
+ * @returns {FetchState<T>|FutureFetchState<T>} - An object containing the fetch state:
  * - `data` (T | undefined): The fetched data, or `undefined` if not yet available.
  * - `loading` (boolean): Whether the fetch request is currently in progress.
  * - `error` (string | undefined): An error message if the fetch request failed, or `undefined` if no error occurred.
