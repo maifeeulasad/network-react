@@ -10,7 +10,7 @@ import type { RollupOptions } from "rollup";
 
 const config: RollupOptions[] = [
     {
-        input: "./useFetch.ts",
+        input: "./index.ts",
         output: [
             {
                 file: packageJson.main,
@@ -33,7 +33,7 @@ const config: RollupOptions[] = [
         external: ["react"],
     },
     {
-        input: "./useFetch.ts",
+        input: "./index.ts",
         output: [{ file: "dist/types.d.ts", format: "es" }],
         plugins: [dts()],
     },
