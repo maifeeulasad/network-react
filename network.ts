@@ -12,6 +12,7 @@
  * @param {number} [config.timeout=5000] - The timeout (in milliseconds) for the fetch request.
  * @param {number} [config.debounceTime=300] - The debounce time (in milliseconds) to delay the fetch call.
  * @param {boolean} [config.useCache=false] - Whether to use caching for the fetched data.
+ * @param {string} [config.method='GET'] - The HTTP method to use for the fetch request (e.g., 'GET', 'POST').
  * @param {RequestInit} [config] - Additional options for the fetch request (e.g., headers, method).
  * 
  * @returns {FetchState<T>} - An object containing the fetch state:
