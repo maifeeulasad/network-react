@@ -86,6 +86,10 @@ interface FetchState<T> {
   abort: () => void;
 }
 
+interface FutureFetchState<T> extends FetchState<T> {
+  fetch: () => void;
+}
+
 interface UseFetchConfig extends RequestInit {
   followConventions?: boolean;
   retries?: number;
@@ -99,7 +103,9 @@ interface UseFetchConfig extends RequestInit {
 
 const cache = new Map<string, any>();
 
-const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+function useFetch<T>(url: string, config: UseFetchConfig & { runInFuture: true }): FutureFetchState<T>;
+function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T>;
+function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | FutureFetchState<T> {
   let {
     followConventions = DEFAULT_FOLLOW_CONVENTIONS,
     retries = DEFAULT_RETRIES,
@@ -209,7 +215,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
     controllerRef.current?.abort();
   };
 
-  return { data, loading, error, refetch: fetchData, abort };
+  return { data, loading, error, refetch: fetchData, abort , fetch: fetchData };
 };
 
 const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
