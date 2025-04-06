@@ -6,7 +6,12 @@
 		"network",
 		"react",
 		"ts",
-		"typescript"
+		"typescript",
+		"hooks",
+		"api",
+		"fetch",
+		"rest",
+		"graphql"
 	],
 	"homepage": "https://github.com/maifeeulasad/network-react#readme",
 	"bugs": {
