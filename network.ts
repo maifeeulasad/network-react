@@ -57,6 +57,8 @@ const DEFAULT_USE_CACHE = false;
 const DEFAULT_HTTP_METHOD = 'GET';
 const DEFAULT_FOLLOW_CONVENTIONS = true;
 
+const CACHE_ALLOWED_METHOD = ['GET', 'HEAD', 'POST'];
+
 interface FetchState<T> {
   data?: T;
   loading: boolean;
@@ -78,7 +80,7 @@ interface UseFetchConfig extends RequestInit {
 const cache = new Map<string, any>();
 
 const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
-  const {
+  let {
     followConventions = DEFAULT_FOLLOW_CONVENTIONS,
     retries = DEFAULT_RETRIES,
     retryDelay = DEFAULT_RETRY_DELAY,
@@ -95,7 +97,11 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
       console.warn('set followConventions to disable this feature.')
       delete options.body;
     }
-
+    if (!CACHE_ALLOWED_METHOD.includes(method) && useCache) {
+      console.warn(`Caching is not allowed for ${method} requests. Ignoring cache.`);
+      console.warn('set followConventions to disable this feature.')
+      useCache = false;
+    }
   }
 
   const [data, setData] = useState<T | undefined>(useCache ? cache.get(url) : undefined);
