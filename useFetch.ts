@@ -142,14 +142,14 @@ function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | Futu
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    
+
     debounceTimerRef.current = setTimeout(async () => {
       if (useCache && cache.has(url)) {
         setData(cache.get(url));
         setLoading(false);
         return;
       }
-      
+
       setLoading(true);
       setError(undefined);
 
@@ -159,7 +159,7 @@ function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | Futu
           if (controllerRef.current) {
             controllerRef.current.abort();
           }
-          
+
           const controller = new AbortController();
           controllerRef.current = controller;
           const signal = controller.signal;
@@ -215,7 +215,7 @@ function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | Futu
     controllerRef.current?.abort();
   };
 
-  return { data, loading, error, refetch: fetchData, abort , fetch: fetchData };
+  return { data, loading, error, refetch: fetchData, abort, fetch: fetchData };
 };
 
 const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
