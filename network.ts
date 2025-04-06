@@ -12,6 +12,7 @@
  * @param {number} [config.timeout=5000] - The timeout (in milliseconds) for the fetch request.
  * @param {number} [config.debounceTime=300] - The debounce time (in milliseconds) to delay the fetch call.
  * @param {boolean} [config.useCache=false] - Whether to use caching for the fetched data.
+ * @param {string} [config.method='GET'] - The HTTP method to use for the fetch request (e.g., 'GET', 'POST').
  * @param {RequestInit} [config] - Additional options for the fetch request (e.g., headers, method).
  * 
  * @returns {FetchState<T>} - An object containing the fetch state:
@@ -52,6 +53,7 @@ const DEFAULT_RETRY_DELAY = 1000;
 const DEFAULT_TIMEOUT = 5000;
 const DEFAULT_DEBOUNCE_TIME = 300;
 const DEFAULT_USE_CACHE = false;
+const DEFAULT_HTTP_METHOD = 'GET';
 
 interface FetchState<T> {
   data?: T;
@@ -67,6 +69,7 @@ interface UseFetchConfig extends RequestInit {
   timeout?: number;
   debounceTime?: number;
   useCache?: boolean;
+  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
 }
 
 const cache = new Map<string, any>();
@@ -78,6 +81,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
     timeout = DEFAULT_TIMEOUT,
     debounceTime = DEFAULT_DEBOUNCE_TIME,
     useCache = DEFAULT_USE_CACHE,
+    method = DEFAULT_HTTP_METHOD,
     ...options
   } = config || {};
 
@@ -166,4 +170,20 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   return { data, loading, error, refetch: fetchData, abort };
 };
 
-export { useFetch };
+const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'GET' });
+}
+
+const useFetchPost = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'POST' });
+}
+
+const useFetchPut = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'PUT' });
+}
+
+const useFetchDelete = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'DELETE' });
+}
+
+export { useFetch , useFetchGet, useFetchPost, useFetchPut, useFetchDelete };
