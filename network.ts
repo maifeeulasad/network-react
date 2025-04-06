@@ -69,7 +69,7 @@ interface UseFetchConfig extends RequestInit {
   timeout?: number;
   debounceTime?: number;
   useCache?: boolean;
-  method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
+  method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
 }
 
 const cache = new Map<string, any>();
@@ -174,6 +174,10 @@ const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => 
   return useFetch<T>(url, { ...config, method: 'GET' });
 }
 
+const useFetchHead = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'HEAD' });
+}
+
 const useFetchPost = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   return useFetch<T>(url, { ...config, method: 'POST' });
 }
@@ -186,4 +190,31 @@ const useFetchDelete = <T>(url: string, config?: UseFetchConfig): FetchState<T> 
   return useFetch<T>(url, { ...config, method: 'DELETE' });
 }
 
-export { useFetch , useFetchGet, useFetchPost, useFetchPut, useFetchDelete };
+const useFetchConnect = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'CONNECT' });
+}
+
+const useFetchOptions = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'OPTIONS' });
+}
+
+const useFetchTrace = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'TRACE' });
+}
+
+const useFetchPatch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'PATCH' });
+}
+
+export {
+  useFetch,
+  useFetchGet,
+  useFetchHead,
+  useFetchPost,
+  useFetchPut,
+  useFetchDelete,
+  useFetchConnect,
+  useFetchOptions,
+  useFetchTrace,
+  useFetchPatch,
+};
