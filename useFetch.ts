@@ -74,6 +74,7 @@ const DEFAULT_DEBOUNCE_TIME = 300;
 const DEFAULT_USE_CACHE = false;
 const DEFAULT_HTTP_METHOD = 'GET';
 const DEFAULT_FOLLOW_CONVENTIONS = true;
+const DEFAULT_RUN_IN_FUTURE = false;
 
 const CACHE_ALLOWED_METHOD = ['GET', 'HEAD', 'POST'];
 
@@ -93,6 +94,7 @@ interface UseFetchConfig extends RequestInit {
   debounceTime?: number;
   useCache?: boolean;
   method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+  runInFuture?: boolean;
 }
 
 const cache = new Map<string, any>();
@@ -106,6 +108,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
     debounceTime = DEFAULT_DEBOUNCE_TIME,
     useCache = DEFAULT_USE_CACHE,
     method = DEFAULT_HTTP_METHOD,
+    runInFuture = DEFAULT_RUN_IN_FUTURE,
     ...options
   } = config || {};
 
@@ -190,7 +193,9 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   }, [url, options, retries, retryDelay, timeout, useCache, debounceTime]);
 
   useEffect(() => {
-    fetchData();
+    if (runInFuture === false) {
+      fetchData();
+    }
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
