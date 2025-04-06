@@ -169,4 +169,20 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   return { data, loading, error, refetch: fetchData, abort };
 };
 
-export { useFetch };
+const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'GET' });
+}
+
+const useFetchPost = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'POST' });
+}
+
+const useFetchPut = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'PUT' });
+}
+
+const useFetchDelete = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+  return useFetch<T>(url, { ...config, method: 'DELETE' });
+}
+
+export { useFetch , useFetchGet, useFetchPost, useFetchPut, useFetchDelete };
