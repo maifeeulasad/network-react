@@ -49,6 +49,24 @@
  */
 import { useState, useEffect, useCallback, useRef } from 'react';
 
+/*
+### Properties of request methods
+source: https://en.wikipedia.org/wiki/HTTP#Request_methods
+
+| Request method | RFC                                                      | Request has payload body  | Response has payload body  | Safe | Idempotent  | Cacheable |
+|----------------|----------------------------------------------------------|---------------------------|----------------------------|------|-------------|-----------|
+| GET            | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Optional                  | Yes                        | Yes  | Yes         | Yes       |
+| HEAD           | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Optional                  | No                         | Yes  | Yes         | Yes       |
+| POST           | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Yes                       | Yes                        | No   | No          | Yes       |
+| PUT            | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Yes                       | Yes                        | No   | Yes         | No        |
+| DELETE         | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Optional                  | Yes                        | No   | Yes         | No        |
+| CONNECT        | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Optional                  | Yes                        | No   | No          | No        |
+| OPTIONS        | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | Optional                  | Yes                        | Yes  | Yes         | No        |
+| TRACE          | [RFC 9110](https://www.rfc-editor.org/rfc/rfc9110.html)  | No                        | Yes                        | Yes  | Yes         | No        |
+| PATCH          | [RFC 5789](https://www.rfc-editor.org/rfc/rfc5789.html)  | Yes                       | Yes                        | No   | No          | No        |
+
+*/
+
 const DEFAULT_RETRIES = 3;
 const DEFAULT_RETRY_DELAY = 1000;
 const DEFAULT_TIMEOUT = 5000;
