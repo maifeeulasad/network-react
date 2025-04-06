@@ -215,7 +215,11 @@ function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | Futu
     controllerRef.current?.abort();
   };
 
-  return { data, loading, error, refetch: fetchData, abort, fetch: fetchData };
+  if (runInFuture) {
+    return { data, loading, error, refetch: fetchData, abort, fetch: fetchData };
+  } else {
+    return { data, loading, error, refetch: fetchData, abort };
+  }
 };
 
 const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
