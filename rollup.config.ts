@@ -6,7 +6,7 @@ import dts from "rollup-plugin-dts";
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import packageJson from "./package.json" 
-import type { RollupOptions } from "rollup";
+import type { RollupOptions, InputPluginOption } from "rollup";
 
 const config: RollupOptions[] = [
     {
@@ -24,7 +24,7 @@ const config: RollupOptions[] = [
             },
         ],
         plugins: [
-            peerDepsExternal(),
+            peerDepsExternal() as InputPluginOption,
             resolve(),
             commonjs(),
             typescript({ tsconfig: "./tsconfig.json" }),
