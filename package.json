@@ -31,7 +31,7 @@
 		"rollup": "rollup -c --bundleConfigAsCjs --configPlugin typescript",
 		"rollup:watch": "chokidar 'network.ts' -c 'pnpm rollup'",
 		"prepare": "pnpm rollup",		
-		"test": "npm i --prefix './server/fetch' && npm start --prefix './server/fetch' && npm i --force --prefix './server/fetch' && npm start --prefix './server/fetch' && jest",
+		"test": "concurrently -k -n rest-server,graphql-server,test -c blue,green,yellow \"npm i --prefix ./server/fetch && npm start --prefix ./server/fetch\" \"npm i --force --prefix ./server/fetch && npm start --prefix ./server/fetch\" \"jest\"",
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage"
 	},
