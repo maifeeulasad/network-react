@@ -83,12 +83,12 @@ interface FetchState<T> {
   data?: T;
   loading: boolean;
   error?: string;
-  refetch: () => void;
+  refetch: (newOptions?: RequestInit) => void;
   abort: () => void;
 }
 
 interface FutureFetchState<T> extends FetchState<T> {
-  fetch: () => void;
+  fetch: (newOptions?: RequestInit) => void;
 }
 
 interface UseFetchConfig extends RequestInit {
@@ -139,7 +139,8 @@ function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | Futu
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const timeoutIds = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  const fetchData = useCallback(() => {
+  const fetchData = useCallback((newOptions?: RequestInit) => {
+    options = { ...options, ...newOptions };
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
