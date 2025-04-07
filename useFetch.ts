@@ -176,6 +176,7 @@ function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | Futu
             throw new Error(`Error: ${response.status} ${response.statusText}`);
           }
 
+          retries = 0;
           const result: T = await response.json();
           setData(result);
           if (useCache) {
