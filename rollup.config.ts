@@ -5,7 +5,6 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import terser from "@rollup/plugin-terser";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
-import packageJson from "./package.json" 
 import type { RollupOptions, InputPluginOption } from "rollup";
 
 const config: RollupOptions[] = [
@@ -13,14 +12,19 @@ const config: RollupOptions[] = [
         input: "./index.ts",
         output: [
             {
-                file: packageJson.main,
+                dir: "dist/cjs",
                 format: "cjs",
                 sourcemap: true,
+                preserveModules: true,
+                preserveModulesRoot: ".",
+                exports: "named",
             },
             {
-                file: packageJson.module,
+                dir: "dist/esm",
                 format: "esm",
                 sourcemap: true,
+                preserveModules: true,
+                preserveModulesRoot: ".",
             },
         ],
         plugins: [
@@ -34,7 +38,12 @@ const config: RollupOptions[] = [
     },
     {
         input: "./index.ts",
-        output: [{ file: "dist/types.d.ts", format: "es" }],
+        output: {
+            dir: "dist/types",
+            format: "es",
+            preserveModules: true,
+            preserveModulesRoot: ".",
+        },
         plugins: [dts()],
     },
 ];
