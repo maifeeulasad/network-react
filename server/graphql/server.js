@@ -2,6 +2,8 @@ const express = require('express');
 const { ApolloServer } = require('apollo-server-express');
 const { gql } = require('graphql-tag');
 
+const PORT = process.env.PORT || 4002;
+
 // Define schema using SDL
 const typeDefs = gql`
   type Query {
@@ -33,7 +35,6 @@ async function startServer() {
   await server.start();
   server.applyMiddleware({ app });
 
-  const PORT = 4000;
   app.listen(PORT, () => {
     console.log(`🚀 Benchmark GraphQL Server ready at http://localhost:${PORT}${server.graphqlPath}`);
   });
