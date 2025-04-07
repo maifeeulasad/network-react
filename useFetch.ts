@@ -15,8 +15,9 @@
  * @param {string} [config.method='GET'] - The HTTP method to use for the fetch request (e.g., 'GET', 'POST').
  * @param {RequestInit} [config] - Additional options for the fetch request (e.g., headers, method).
  * @param {boolean} [config.followConventions=true] - Whether to follow HTTP conventions for the fetch request.
+ * @param {boolean} [config.runInFuture=false] - If true, the fetch will not be executed immediately.
  * 
- * @returns {FetchState<T>} - An object containing the fetch state:
+ * @returns {FetchState<T>|FutureFetchState<T>} - An object containing the fetch state:
  * - `data` (T | undefined): The fetched data, or `undefined` if not yet available.
  * - `loading` (boolean): Whether the fetch request is currently in progress.
  * - `error` (string | undefined): An error message if the fetch request failed, or `undefined` if no error occurred.
@@ -74,6 +75,7 @@ const DEFAULT_DEBOUNCE_TIME = 300;
 const DEFAULT_USE_CACHE = false;
 const DEFAULT_HTTP_METHOD = 'GET';
 const DEFAULT_FOLLOW_CONVENTIONS = true;
+const DEFAULT_RUN_IN_FUTURE = false;
 
 const CACHE_ALLOWED_METHOD = ['GET', 'HEAD', 'POST'];
 
@@ -81,8 +83,12 @@ interface FetchState<T> {
   data?: T;
   loading: boolean;
   error?: string;
-  refetch: () => void;
+  refetch: (newOptions?: RequestInit) => void;
   abort: () => void;
+}
+
+interface FutureFetchState<T> extends FetchState<T> {
+  fetch: (newOptions?: RequestInit) => void;
 }
 
 interface UseFetchConfig extends RequestInit {
@@ -93,11 +99,14 @@ interface UseFetchConfig extends RequestInit {
   debounceTime?: number;
   useCache?: boolean;
   method?: 'GET' | 'HEAD' | 'POST' | 'PUT' | 'DELETE' | 'CONNECT' | 'OPTIONS' | 'TRACE' | 'PATCH';
+  runInFuture?: boolean;
 }
 
 const cache = new Map<string, any>();
 
-const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
+function useFetch<T>(url: string, config: UseFetchConfig & { runInFuture: true }): FutureFetchState<T>;
+function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T>;
+function useFetch<T>(url: string, config?: UseFetchConfig): FetchState<T> | FutureFetchState<T> {
   let {
     followConventions = DEFAULT_FOLLOW_CONVENTIONS,
     retries = DEFAULT_RETRIES,
@@ -106,6 +115,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
     debounceTime = DEFAULT_DEBOUNCE_TIME,
     useCache = DEFAULT_USE_CACHE,
     method = DEFAULT_HTTP_METHOD,
+    runInFuture = DEFAULT_RUN_IN_FUTURE,
     ...options
   } = config || {};
 
@@ -129,18 +139,19 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
   const timeoutIds = useRef<ReturnType<typeof setTimeout>[]>([]);
 
-  const fetchData = useCallback(() => {
+  const fetchData = useCallback((newOptions?: RequestInit) => {
+    options = { ...options, ...newOptions };
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-    
+
     debounceTimerRef.current = setTimeout(async () => {
       if (useCache && cache.has(url)) {
         setData(cache.get(url));
         setLoading(false);
         return;
       }
-      
+
       setLoading(true);
       setError(undefined);
 
@@ -150,7 +161,7 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
           if (controllerRef.current) {
             controllerRef.current.abort();
           }
-          
+
           const controller = new AbortController();
           controllerRef.current = controller;
           const signal = controller.signal;
@@ -190,7 +201,9 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
   }, [url, options, retries, retryDelay, timeout, useCache, debounceTime]);
 
   useEffect(() => {
-    fetchData();
+    if (runInFuture === false) {
+      fetchData();
+    }
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
@@ -204,7 +217,11 @@ const useFetch = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
     controllerRef.current?.abort();
   };
 
-  return { data, loading, error, refetch: fetchData, abort };
+  if (runInFuture) {
+    return { data, loading, error, refetch: fetchData, abort, fetch: fetchData };
+  } else {
+    return { data, loading, error, refetch: fetchData, abort };
+  }
 };
 
 const useFetchGet = <T>(url: string, config?: UseFetchConfig): FetchState<T> => {
