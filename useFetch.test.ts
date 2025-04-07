@@ -1,4 +1,4 @@
-const { useFetch } = require("./network");
+const { useFetch } = require("./useFetch");
 const { renderHook, act } = require("@testing-library/react-hooks");
 
 global.fetch = jest.fn() as jest.MockedFunction<typeof fetch>;
