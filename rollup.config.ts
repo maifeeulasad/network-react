@@ -9,7 +9,7 @@ import type { RollupOptions, InputPluginOption } from "rollup";
 
 const config: RollupOptions[] = [
     {
-        input: "./index.ts",
+        input: ["./index.ts", "./useFetch.ts", "./useGraphQL.ts"],
         output: [
             {
                 dir: "dist/cjs",
@@ -37,7 +37,7 @@ const config: RollupOptions[] = [
         external: ["react"],
     },
     {
-        input: "./index.ts",
+        input: ["./index.ts", "./useFetch.ts", "./useGraphQL.ts"],
         output: {
             dir: "dist/types",
             format: "es",
